@@ -3,12 +3,17 @@
 /**
  * Module dependencies.
  */
-
+var fs = require('fs');
 var app = require('../app');
 var debug = require('debug')('webrtc-signalling:server');
-var http = require('http');
+var https = require('https');
 
-
+var options = {
+  key: fs.readFileSync('./localhost.key'),
+  cert: fs.readFileSync('./localhost.cert'),
+  requestCert: false,
+  rejectUnauthorized: false
+};
 /**
  * Get port from environment and store in Express.
  */
@@ -20,7 +25,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer(options, app);
 var io = app.io
 io.attach(server);
 /**

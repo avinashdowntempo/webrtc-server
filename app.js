@@ -28,21 +28,21 @@ io.on("connection", function (socket) {
         console.log('connect to other user' + socket.id + ' ' + data.user);
     });
     socket.on('send-ice', function (data) {
-        console.log('ice' + socket.id + ' ' + data + 'remote user' + JSON.stringify(data.to));
-        console.log(data.ice);
-        console.log('to user socket' + users[data.to]);
+        console.log('ice' + socket.id + 'remote user' + JSON.stringify(data.to));
+        //console.log(data.ice);
+        //console.log('to user socket' + users[data.to]);
         io.to(users[data.to]).emit('receive-ice', data.ice);
     });
     socket.on('send-offer', function (data) {
-        console.log('ice' + socket.id + ' ' + data + 'remote user' + JSON.stringify(data.to));
-        console.log(data.offer);
-        console.log('to user socket' + users[data.to]);
-        io.to(users[data.to]).emit('receive-offer', data.offer);
+        console.log('ice' + socket.id + 'remote user' + JSON.stringify(data.to));
+        //console.log(data.offer);
+        //console.log('to user socket' + users[data.to]);
+        io.to(users[data.to]).emit('receive-offer', { offer: data.offer, from: data.from });
     });
     socket.on('send-answer', function (data) {
-        console.log('ice' + socket.id + ' ' + data + 'remote user' + JSON.stringify(data.to));
-        console.log(data.answer);
-        console.log('to user socket' + users[data.to]);
+        console.log('answer' + socket.id + 'remote user' + JSON.stringify(data.to));
+        //console.log(data.answer);
+        //console.log('to user socket' + users[data.to]);
         io.to(users[data.to]).emit('receive-answer', data.answer);
     });
 });
