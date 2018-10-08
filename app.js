@@ -33,6 +33,12 @@ io.on("connection", function (socket) {
         //console.log('to user socket' + users[data.to]);
         io.to(users[data.to]).emit('receive-ice', data.ice);
     });
+    socket.on('send-peer-ice', function (data) {
+        console.log('ice from remote' + socket.id + 'remote user' + JSON.stringify(data.to));
+        //console.log(data.ice);
+        //console.log('to user socket' + users[data.to]);
+        io.to(users[data.to]).emit('receive-peer-ice', data.ice);
+    });
     socket.on('send-offer', function (data) {
         console.log('ice' + socket.id + 'remote user' + JSON.stringify(data.to));
         //console.log(data.offer);
