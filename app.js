@@ -16,6 +16,7 @@ io.on("connection", function (socket) {
     socket.on('disconnect', function () {
         delete users[socket.user];
         console.log(users);
+        io.emit('user-disconnected',socket.user);
     });
     console.log("A user connected");
     socket.on('login', function (data) {
@@ -24,31 +25,20 @@ io.on("connection", function (socket) {
         console.log(users);
         socket.user = data.user;
     });
-    socket.on('connect-user', function (data) {
-        console.log('connect to other user' + socket.id + ' ' + data.user);
-    });
     socket.on('send-ice', function (data) {
         console.log('ice' + socket.id + 'remote user' + JSON.stringify(data.to));
-        //console.log(data.ice);
-        //console.log('to user socket' + users[data.to]);
         io.to(users[data.to]).emit('receive-ice', data.ice);
     });
     socket.on('send-peer-ice', function (data) {
         console.log('ice from remote' + socket.id + 'remote user' + JSON.stringify(data.to));
-        //console.log(data.ice);
-        //console.log('to user socket' + users[data.to]);
         io.to(users[data.to]).emit('receive-peer-ice', data.ice);
     });
     socket.on('send-offer', function (data) {
         console.log('ice' + socket.id + 'remote user' + JSON.stringify(data.to));
-        //console.log(data.offer);
-        //console.log('to user socket' + users[data.to]);
         io.to(users[data.to]).emit('receive-offer', { offer: data.offer, from: data.from });
     });
     socket.on('send-answer', function (data) {
         console.log('answer' + socket.id + 'remote user' + JSON.stringify(data.to));
-        //console.log(data.answer);
-        //console.log('to user socket' + users[data.to]);
         io.to(users[data.to]).emit('receive-answer', data.answer);
     });
 });
