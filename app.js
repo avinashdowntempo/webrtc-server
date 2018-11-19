@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 var io = socket();
@@ -16,7 +15,7 @@ io.on("connection", function (socket) {
     socket.on('disconnect', function () {
         delete users[socket.user];
         console.log(users);
-        io.emit('user-disconnected',socket.user);
+        io.emit('user-disconnected', socket.user);
     });
     console.log("A user connected");
     socket.on('login', function (data) {
@@ -47,9 +46,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 module.exports = app;
